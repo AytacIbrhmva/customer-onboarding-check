@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Customer = require("../models/customerModel");
+const Pep = require("../models/pepModel");
 
 //@ Get all customers
 const getCustomers = asyncHandler(async (req, res) => {
@@ -14,7 +15,6 @@ const createCustomer = asyncHandler(async (req, res) => {
     lastName,
     gender,
     dateOfBirth,
-    placeOfBirth,
     nationality,
     currentAddress,
     email,
@@ -22,25 +22,28 @@ const createCustomer = asyncHandler(async (req, res) => {
     jobTitle,
     industrySector,
     photo,
-    status
+    fin
   } = req.body;
   if (
     !firstName ||
     !lastName ||
     !gender ||
     !dateOfBirth ||
-    !placeOfBirth ||
     !nationality ||
     !currentAddress ||
     !email ||
     !phoneNumber ||
     !jobTitle ||
     !industrySector ||
-    !photo
+    !photo ||
+    !fin
   ) {
     res.status(400);
     throw new Error("All fields are mandatory");
   }
+
+  const isPep = await Pep.findOne({ fin });
+  const status = isPep ? 'dangerous' : 'safe';
 
 
   const customer = await Customer.create({
@@ -48,7 +51,6 @@ const createCustomer = asyncHandler(async (req, res) => {
     lastName,
     gender,
     dateOfBirth,
-    placeOfBirth,
     nationality,
     currentAddress,
     email,
@@ -56,7 +58,8 @@ const createCustomer = asyncHandler(async (req, res) => {
     jobTitle,
     industrySector,
     photo,
-    status
+    status,
+    fin
   });
   res.status(201).json(customer);
 });
