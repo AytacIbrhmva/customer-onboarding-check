@@ -5,11 +5,7 @@ async function checkMediaStatus(content) {
     const response = await axios.post(`${process.env.FLASK_API}/analyze/analyze-content`, {
       content: content,
     });
-    if (response.data.status === "negative") {
-      return "dangerous";
-    } else {
-      return "safe";
-    }
+    return response.data.status;
   } catch (error) {
     console.error("Error checking media status:", error.message);
     throw error;

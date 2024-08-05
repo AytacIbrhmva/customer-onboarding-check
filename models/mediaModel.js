@@ -9,7 +9,7 @@ const mediaSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  status: { type: String, required: true, enum: ["dangerous", "safe"], default: "safe" },
+  status: { type: String, required: true, enum: ["negative", "non-negative"], default: "non-negative" },
 });
 
 module.exports = mongoose.model("Media", mediaSchema);
