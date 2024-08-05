@@ -10,20 +10,7 @@ const getCustomers = asyncHandler(async (req, res) => {
 
 //@ Create customer
 const createCustomer = asyncHandler(async (req, res) => {
-  const {
-    firstName,
-    lastName,
-    gender,
-    dateOfBirth,
-    nationality,
-    currentAddress,
-    email,
-    phoneNumber,
-    jobTitle,
-    industrySector,
-    photo,
-    fin
-  } = req.body;
+  const { firstName, lastName, gender, dateOfBirth, nationality, currentAddress, email, phoneNumber, jobTitle, industrySector, photo, fin } = req.body;
   if (
     !firstName ||
     !lastName ||
@@ -43,8 +30,7 @@ const createCustomer = asyncHandler(async (req, res) => {
   }
 
   const isPep = await Pep.findOne({ fin });
-  const status = isPep ? 'dangerous' : 'safe';
-
+  const status = isPep ? "dangerous" : "safe";
 
   const customer = await Customer.create({
     firstName,
@@ -59,7 +45,7 @@ const createCustomer = asyncHandler(async (req, res) => {
     industrySector,
     photo,
     status,
-    fin
+    fin,
   });
   res.status(201).json(customer);
 });
@@ -71,7 +57,10 @@ const updateCustomer = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Customer not found");
   }
-  const updatedCustomer = await Customer.findByIdAndUpdate(req.params.id, req.body, {
+
+  const updatedData = { ...customer.toObject(), ...req.body };
+
+  const updatedCustomer = await Customer.findByIdAndUpdate(req.params.id, updatedData, {
     new: true,
   });
   res.status(200).json(updatedCustomer);

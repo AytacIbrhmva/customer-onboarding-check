@@ -34,7 +34,10 @@ const updateMedia = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Media not found");
   }
-  const updatedMedia = await Media.findByIdAndUpdate(req.params.id, req.body, {
+
+  const updatedData = { ...media.toObject(), ...req.body };
+
+  const updatedMedia = await Media.findByIdAndUpdate(req.params.id, updatedData, {
     new: true,
   });
   res.status(200).json(updatedMedia);

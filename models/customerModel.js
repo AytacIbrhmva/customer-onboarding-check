@@ -13,7 +13,7 @@ const customerSchema = new mongoose.Schema({
   jobTitle: { type: String, required: true },
   industrySector: { type: String, required: true },
   photo: { type: String, required: true },
-  status: { type: String, required: true, enum: ["negative", "non-negative"], default: "non-negative" },
+  status: { type: String, required: true, enum: ["dangerous", "safe"], default: "safe" },
 });
 
 module.exports = mongoose.model("Customer", customerSchema);
