@@ -3,7 +3,7 @@ const axios = require("axios");
 // Function to check content status using the Flask API
 async function checkMediaStatus(content) {
   try {
-    const response = await axios.post("http://139.59.215.66:8080/analyze/analyze-content", {
+    const response = await axios.post(`${process.env.FLASK_API}/analyze/analyze-content`, {
       content: content,
     });
     if (response.data.status === "negative") {
