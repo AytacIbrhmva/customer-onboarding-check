@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Media = require("../models/mediaModel");
+const { checkMediaStatus } = require("../services/apiService");
 
 //@ Get all medias
 const getMedias = asyncHandler(async (req, res) => {
@@ -9,12 +10,14 @@ const getMedias = asyncHandler(async (req, res) => {
 
 //@ Create media
 const createMedia = asyncHandler(async (req, res) => {
-  const { photo, content, status } = req.body;
+  const { photo, content } = req.body;
 
   if (!photo || !content) {
     res.status(400);
     throw new Error("All fields are mandatory");
   }
+
+  const status = await checkMediaStatus(content);
 
   const media = await Media.create({
     photo,
