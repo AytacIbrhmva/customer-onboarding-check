@@ -29,6 +29,11 @@ async function checkMediaStatus(content, photo) {
     const contentStatus = await checkContentStatus(content);
     const photoStatus = await checkPhotoStatus(photo);
 
+    // If the content is negative, return "negative".
+    // If the content is non-negative and the photo is negative, return "non-negative"
+    // (for example, the content could be about a harmless topic but the photo might
+    // contain potentially harmful elements like a knife in a food receipt photo).
+    // Otherwise, return "non-negative".
     if (contentStatus === "negative") {
       return "negative";
     } else if (photoStatus === "negative") {
@@ -36,7 +41,6 @@ async function checkMediaStatus(content, photo) {
     } else {
       return "non-negative";
     }
-
   } catch (error) {
     console.error("Error checking media status:", error.message);
     throw error;
