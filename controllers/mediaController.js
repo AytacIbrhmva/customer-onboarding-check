@@ -12,11 +12,6 @@ const getMedias = asyncHandler(async (req, res) => {
 const createMedia = asyncHandler(async (req, res) => {
   const { photo, content } = req.body;
 
-  if (!photo || !content) {
-    res.status(400);
-    throw new Error("All fields are mandatory");
-  }
-
   const status = await checkMediaStatus(content, photo);
 
   const media = await Media.create({

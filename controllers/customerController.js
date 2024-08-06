@@ -11,23 +11,6 @@ const getCustomers = asyncHandler(async (req, res) => {
 //@ Create customer
 const createCustomer = asyncHandler(async (req, res) => {
   const { firstName, lastName, gender, dateOfBirth, nationality, currentAddress, email, phoneNumber, jobTitle, industrySector, photo, fin } = req.body;
-  if (
-    !firstName ||
-    !lastName ||
-    !gender ||
-    !dateOfBirth ||
-    !nationality ||
-    !currentAddress ||
-    !email ||
-    !phoneNumber ||
-    !jobTitle ||
-    !industrySector ||
-    !photo ||
-    !fin
-  ) {
-    res.status(400);
-    throw new Error("All fields are mandatory");
-  }
 
   const isPep = await Pep.findOne({ fin });
   const status = isPep ? "dangerous" : "safe";
