@@ -52,15 +52,19 @@ const createCustomer = asyncHandler(async (req, res) => {
 
 //@ Update customer
 const updateCustomer = asyncHandler(async (req, res) => {
+  const { fin } = req.body;
   const customer = await Customer.findById(req.params.id);
   if (!customer) {
     res.status(404);
     throw new Error("Customer not found");
   }
 
-  const updatedData = { ...customer.toObject(), ...req.body };
-
-  const updatedCustomer = await Customer.findByIdAndUpdate(req.params.id, updatedData, {
+  if (fin !== customer.fin) {
+    const isPep = await Pep.findOne({ fin });
+    req.body.status = isPep ? "dangerous" : "safe";
+  } 
+  
+  const updatedCustomer = await Customer.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
   res.status(200).json(updatedCustomer);
